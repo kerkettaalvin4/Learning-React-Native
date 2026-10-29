@@ -1,5 +1,6 @@
 
 import { StyleSheet, Text, View } from 'react-native';
+import ProductCard from './components/ProductCard';
 
 export default function App() {
   return (
@@ -11,13 +12,9 @@ export default function App() {
         </Text>
       </View>
 
-      <View style={styles.productCard}>
-        <Text style={styles.productName}>Gaming Keyboard</Text>
-        <Text style={styles.description}>
-          Comfortable and reliable for everyday use.
-        </Text>
-        <Text style={styles.price}>₹2,500</Text>
-      </View>
+      <ProductCard name='Wireless Mouse' price={1200}/>
+      <ProductCard name='Gaming Keyboard' price={2500}/>
+      <ProductCard name='Running Shoes' price={3000}/>
     </View>
   );
 }
@@ -41,11 +38,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#64748B',
     marginTop: 6,
-  },
-  productCard: {
-    backgroundColor: '#E8F0FE',
-    padding: 20,
-    borderRadius: 16,
   },
   productName: {
     fontSize: 22,
