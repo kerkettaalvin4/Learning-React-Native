@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import ProductCard from './components/ProductCard';
 
 export default function App() {
@@ -8,6 +8,9 @@ export default function App() {
   { id: 2, name: 'Gaming Keyboard', price: 2500 },
   { id: 3, name: 'Running Shoes', price: 3000 },
   { id: 4, name: 'Headphones', price: 1800 },
+  { id: 5, name: 'Earphones', price: 1000 },
+  { id: 6, name: 'Cooling Pad', price: 1800 },
+  { id: 7, name: 'Chair', price: 3000 },
 ];
 
   return (
@@ -18,16 +21,26 @@ export default function App() {
           Welcome back! Find something you love.
         </Text>
       </View>
-
-      {
+      
+        {/* {
         products.map((product)=>(
         <ProductCard
         key={product.id}
         name={product.name}
         price={product.price}
         />
-      ))}
-
+      ))} */}
+      <FlatList
+        data={products}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <ProductCard
+            name={item.name}
+            price={item.price}
+          />
+        )}
+      />
+      
     </View>
   );
 }
