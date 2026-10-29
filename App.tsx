@@ -3,6 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import ProductCard from './components/ProductCard';
 
 export default function App() {
+  const products = [
+  { id: 1, name: 'Wireless Mouse', price: 1200 },
+  { id: 2, name: 'Gaming Keyboard', price: 2500 },
+  { id: 3, name: 'Running Shoes', price: 3000 },
+  { id: 4, name: 'Headphones', price: 1800 },
+];
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -12,9 +19,15 @@ export default function App() {
         </Text>
       </View>
 
-      <ProductCard name='Wireless Mouse' price={1200}/>
-      <ProductCard name='Gaming Keyboard' price={2500}/>
-      <ProductCard name='Running Shoes' price={3000}/>
+      {
+        products.map((product)=>(
+        <ProductCard
+        key={product.id}
+        name={product.name}
+        price={product.price}
+        />
+      ))}
+
     </View>
   );
 }
