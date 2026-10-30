@@ -4,12 +4,16 @@ type productCardProps = {
     name:string,
     price:number,
     onAddToCart: () => void,
+    onRemoveFromCart: () =>void,
+    isCartEmpty: boolean,
 }
 
 export default function ProductCard({
     name,
     price,
     onAddToCart,
+    onRemoveFromCart,
+    isCartEmpty,
 }:productCardProps){
 
     return(
@@ -19,6 +23,11 @@ export default function ProductCard({
             <Button 
             title='Add to cart'
             onPress={onAddToCart}
+            />
+            <Button 
+            title='Remove From Cart'
+            onPress={onRemoveFromCart}
+            disabled={isCartEmpty}
             />
         </View>
     );

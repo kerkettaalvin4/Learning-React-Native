@@ -20,6 +20,16 @@ export default function App() {
     setCartCount((previousCount) => previousCount + 1)
   }
 
+  const removeFromCart = () => {
+    if(cartCount==0){
+      setCartCount(0)
+    }
+    else{
+      setCartCount((previousCount) => previousCount-1)
+    }
+    
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -46,6 +56,8 @@ export default function App() {
             name={item.name}
             price={item.price}
             onAddToCart={addToCart}
+            onRemoveFromCart={removeFromCart}
+            isCartEmpty={cartCount===0}
           />
         )}
       />
