@@ -1,5 +1,6 @@
 
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { useState } from 'react';
 import ProductCard from './components/ProductCard';
 
 export default function App() {
@@ -13,12 +14,18 @@ export default function App() {
   { id: 7, name: 'Chair', price: 3000 },
 ];
 
+  const [cartCount, setCartCount] = useState(0);
+  
+  const addToCart = () => {
+    setCartCount((previousCount) => previousCount + 1)
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.heading}>My Tech Store</Text>
         <Text style={styles.subtitle}>
-          Welcome back! Find something you love.
+          Cart: {cartCount}
         </Text>
       </View>
       
@@ -30,6 +37,7 @@ export default function App() {
         price={product.price}
         />
       ))} */}
+
       <FlatList
         data={products}
         keyExtractor={(item) => item.id.toString()}
@@ -37,6 +45,7 @@ export default function App() {
           <ProductCard
             name={item.name}
             price={item.price}
+            onAddToCart={addToCart}
           />
         )}
       />

@@ -1,19 +1,25 @@
-import {StyleSheet, View, Text } from "react-native";
+import {StyleSheet, View, Text, Button } from "react-native";
 
 type productCardProps = {
     name:string,
     price:number,
+    onAddToCart: () => void,
 }
 
 export default function ProductCard({
     name,
     price,
+    onAddToCart,
 }:productCardProps){
 
     return(
         <View style={styles.card}>
             <Text style = {styles.name}>{name}</Text>
             <Text style = {styles.price}>₹{price}</Text>
+            <Button 
+            title='Add to cart'
+            onPress={onAddToCart}
+            />
         </View>
     );
 }
