@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
 import { useState } from 'react';
 import ProductCard from './components/ProductCard';
 
@@ -15,6 +15,7 @@ export default function App() {
 ];
 
   const [cartCount, setCartCount] = useState(0);
+  const [search, setSearch] = useState('');
   
   const addToCart = () => {
     setCartCount((previousCount) => previousCount + 1)
@@ -39,14 +40,12 @@ export default function App() {
         </Text>
       </View>
       
-        {/* {
-        products.map((product)=>(
-        <ProductCard
-        key={product.id}
-        name={product.name}
-        price={product.price}
-        />
-      ))} */}
+      <TextInput
+      style={styles.searchInput}
+      placeholder="Search products..."
+      value={search}
+      onChangeText={setSearch}
+      />
 
       <FlatList
         data={products}
@@ -102,4 +101,13 @@ const styles = StyleSheet.create({
     color: '#15803D',
     marginTop: 16,
   },
+  searchInput: {
+  backgroundColor: '#FFFFFF',
+  padding: 14,
+  borderRadius: 12,
+  marginBottom: 20,
+  fontSize: 16,
+  borderWidth: 1,
+  borderColor: '#CBD5E1',
+},
 });
