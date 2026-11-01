@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, FlatList, TextInput } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TextInput, Button } from 'react-native';
 import { useState } from 'react';
 import ProductCard from './components/ProductCard';
 
@@ -16,6 +16,10 @@ export default function App() {
 
   const [cartCount, setCartCount] = useState(0);
   const [search, setSearch] = useState('');
+
+  const filteredProducts = products.filter((product)=>
+    product.name.toLowerCase().includes(search.toLowerCase())  
+  )
   
   const addToCart = () => {
     setCartCount((previousCount) => previousCount + 1)
@@ -46,9 +50,14 @@ export default function App() {
       value={search}
       onChangeText={setSearch}
       />
+      
+      <Button 
+        title='Clear Search'
+        onPress={() => setSearch('')}
+      />
 
       <FlatList
-        data={products}
+        data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ProductCard
@@ -59,6 +68,17 @@ export default function App() {
             isCartEmpty={cartCount===0}
           />
         )}
+
+        ListEmptyComponent={
+          <>
+            <Text style={styles.emptyText}>
+            No Products Found
+            </Text>
+            <Text style={styles.emptyText2}>
+              Try searching for another product.
+            </Text>
+          </>
+        }
       />
       
     </View>
@@ -109,5 +129,15 @@ const styles = StyleSheet.create({
   fontSize: 16,
   borderWidth: 1,
   borderColor: '#CBD5E1',
-},
+  },
+  emptyText: {
+    textAlign:'center',
+    fontSize: 16,
+    fontWeight:  'bold',
+  },
+  emptyText2: {
+    textAlign:'center',
+    paddingTop: 5,
+    fontSize: 13,
+  },
 });
