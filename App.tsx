@@ -16,6 +16,7 @@ export default function App() {
 
   const [cartCount, setCartCount] = useState(0);
   const [search, setSearch] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const filteredProducts = products.filter((product)=>
     product.name.toLowerCase().includes(search.toLowerCase())  
@@ -42,6 +43,25 @@ export default function App() {
         <Text style={styles.subtitle}>
           Cart: {cartCount}
         </Text>
+
+        <Text>
+          {isLoggedIn ? 'Welcome Back, Alvin! Enjoy Shopping' : 'Welcome to My Tech Store. Please Login'}
+        </Text>
+
+        {isLoggedIn ? (
+          <Button
+            title="Logout"
+            onPress={() => setIsLoggedIn(false)}
+          />
+        ) : (
+          <Button
+            title="Login"
+            onPress={() => setIsLoggedIn(true)}
+          />
+        )
+        }
+
+        
       </View>
       
       <TextInput
@@ -56,7 +76,8 @@ export default function App() {
         onPress={() => setSearch('')}
       />
 
-      <FlatList
+      {isLoggedIn ? (
+        <FlatList
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
@@ -80,6 +101,9 @@ export default function App() {
           </>
         }
       />
+      ): (
+        <Text>Please Login To View Products</Text>
+      )}
       
     </View>
   );
