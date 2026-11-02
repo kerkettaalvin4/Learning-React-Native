@@ -1,25 +1,27 @@
 
 import { StyleSheet, Text, View, FlatList, TextInput, Button } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProductCard from './components/ProductCard';
+import { Product } from './types/Product';
 
 export default function App() {
-  const products = [
-  { id: 1, name: 'Wireless Mouse', price: 1200 },
-  { id: 2, name: 'Gaming Keyboard', price: 2500 },
-  { id: 3, name: 'Running Shoes', price: 3000 },
-  { id: 4, name: 'Headphones', price: 1800 },
-  { id: 5, name: 'Earphones', price: 1000 },
-  { id: 6, name: 'Cooling Pad', price: 1800 },
-  { id: 7, name: 'Chair', price: 3000 },
-];
+//   const products = [
+//   { id: 1, name: 'Wireless Mouse', price: 1200 },
+//   { id: 2, name: 'Gaming Keyboard', price: 2500 },
+//   { id: 3, name: 'Running Shoes', price: 3000 },
+//   { id: 4, name: 'Headphones', price: 1800 },
+//   { id: 5, name: 'Earphones', price: 1000 },
+//   { id: 6, name: 'Cooling Pad', price: 1800 },
+//   { id: 7, name: 'Chair', price: 3000 },
+// ];
 
   const [cartCount, setCartCount] = useState(0);
   const [search, setSearch] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [products, setProducts] = useState<Product[]>([])
 
   const filteredProducts = products.filter((product)=>
-    product.name.toLowerCase().includes(search.toLowerCase())  
+    product.title.toLowerCase().includes(search.toLowerCase())  
   )
   
   const addToCart = () => {
@@ -35,6 +37,17 @@ export default function App() {
     }
     
   }
+
+  useEffect(() =>{
+    fetch('https://dummyjson.com/products')
+    .then((response) => response.json())
+    .then((data) => {
+      setProducts(data.products);
+    })
+    .catch((error) => {
+      console.log("Error fetcing products:",error)
+    });
+  },[]);
 
   return (
     <View style={styles.container}>
@@ -82,7 +95,7 @@ export default function App() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ProductCard
-            name={item.name}
+            name={item.title}
             price={item.price}
             onAddToCart={addToCart}
             onRemoveFromCart={removeFromCart}
