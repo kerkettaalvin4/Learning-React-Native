@@ -17,9 +17,10 @@ export default function App() {
 
   const [cartCount, setCartCount] = useState(0);
   const [search, setSearch] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [products, setProducts] = useState<Product[]>([])
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('')
   const filteredProducts = products.filter((product)=>
     product.title.toLowerCase().includes(search.toLowerCase())  
   )
@@ -38,16 +39,28 @@ export default function App() {
     
   }
 
-  useEffect(() =>{
-    fetch('https://dummyjson.com/products')
-    .then((response) => response.json())
-    .then((data) => {
+  useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('https://dummyjson.com/products');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+
+      const data = await response.json();
+
       setProducts(data.products);
-    })
-    .catch((error) => {
-      console.log("Error fetcing products:",error)
-    });
-  },[]);
+    } catch (error) {
+        setError('Something went wrong while fetching products.');
+        console.log('Error fetching products:', error);
+      } finally {
+            setLoading(false);
+          }
+        };
+
+        fetchProducts();
+      }, []);
 
   return (
     <View style={styles.container}>
@@ -89,7 +102,14 @@ export default function App() {
         onPress={() => setSearch('')}
       />
 
-      {isLoggedIn ? (
+
+      {!isLoggedIn ? (
+        <Text>Please Login To View Products</Text>
+      ) : loading ? (
+        <Text>Loading products...</Text>
+      ) : error ?(
+        <Text>{error}</Text>
+      ) : (
         <FlatList
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
@@ -114,10 +134,7 @@ export default function App() {
           </>
         }
       />
-      ): (
-        <Text>Please Login To View Products</Text>
       )}
-      
     </View>
   );
 }
