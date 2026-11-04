@@ -1,141 +1,31 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+import DetailsScreen from './screens/DetailsScreen';
+import { RootStackParamList } from './types/Navigation';
 
 import { StyleSheet, Text, View, FlatList, TextInput, Button } from 'react-native';
 import { useState, useEffect } from 'react';
 import ProductCard from './components/ProductCard';
 import { Product } from './types/Product';
 
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+
 export default function App() {
-//   const products = [
-//   { id: 1, name: 'Wireless Mouse', price: 1200 },
-//   { id: 2, name: 'Gaming Keyboard', price: 2500 },
-//   { id: 3, name: 'Running Shoes', price: 3000 },
-//   { id: 4, name: 'Headphones', price: 1800 },
-//   { id: 5, name: 'Earphones', price: 1000 },
-//   { id: 6, name: 'Cooling Pad', price: 1800 },
-//   { id: 7, name: 'Chair', price: 3000 },
-// ];
-
-  const [cartCount, setCartCount] = useState(0);
-  const [search, setSearch] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('')
-  const filteredProducts = products.filter((product)=>
-    product.title.toLowerCase().includes(search.toLowerCase())  
-  )
-  
-  const addToCart = () => {
-    setCartCount((previousCount) => previousCount + 1)
-  }
-
-  const removeFromCart = () => {
-    if(cartCount==0){
-      setCartCount(0)
-    }
-    else{
-      setCartCount((previousCount) => previousCount-1)
-    }
-    
-  }
-
-  useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch('https://dummyjson.com/products');
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
-
-      const data = await response.json();
-
-      setProducts(data.products);
-    } catch (error) {
-        setError('Something went wrong while fetching products.');
-        console.log('Error fetching products:', error);
-      } finally {
-            setLoading(false);
-          }
-        };
-
-        fetchProducts();
-      }, []);
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.heading}>My Tech Store</Text>
-        <Text style={styles.subtitle}>
-          Cart: {cartCount}
-        </Text>
-
-        <Text>
-          {isLoggedIn ? 'Welcome Back, Alvin! Enjoy Shopping' : 'Welcome to My Tech Store. Please Login'}
-        </Text>
-
-        {isLoggedIn ? (
-          <Button
-            title="Logout"
-            onPress={() => setIsLoggedIn(false)}
-          />
-        ) : (
-          <Button
-            title="Login"
-            onPress={() => setIsLoggedIn(true)}
-          />
-        )
-        }
-
-        
-      </View>
-      
-      <TextInput
-      style={styles.searchInput}
-      placeholder="Search products..."
-      value={search}
-      onChangeText={setSearch}
+  return(
+    <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen
+        name='Home'
+        component={HomeScreen}
       />
-      
-      <Button 
-        title='Clear Search'
-        onPress={() => setSearch('')}
+      <Stack.Screen
+        name='Details'
+        component={DetailsScreen}
       />
-
-
-      {!isLoggedIn ? (
-        <Text>Please Login To View Products</Text>
-      ) : loading ? (
-        <Text>Loading products...</Text>
-      ) : error ?(
-        <Text>{error}</Text>
-      ) : (
-        <FlatList
-        data={filteredProducts}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ProductCard
-            name={item.title}
-            price={item.price}
-            onAddToCart={addToCart}
-            onRemoveFromCart={removeFromCart}
-            isCartEmpty={cartCount===0}
-          />
-        )}
-
-        ListEmptyComponent={
-          <>
-            <Text style={styles.emptyText}>
-            No Products Found
-            </Text>
-            <Text style={styles.emptyText2}>
-              Try searching for another product.
-            </Text>
-          </>
-        }
-      />
-      )}
-    </View>
+    </Stack.Navigator>
+  </NavigationContainer>
   );
 }
 
