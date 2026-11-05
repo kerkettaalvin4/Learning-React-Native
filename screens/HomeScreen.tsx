@@ -1,9 +1,15 @@
 import { Text, View, StyleSheet, Button, FlatList, Pressable } from "react-native";
 
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/Navigation';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
+import { RootStackParamList, RootTabParamList } from '../types/Navigation';
+
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<RootTabParamList, 'Home'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 export default function HomeScreen({navigation}:Props){
 

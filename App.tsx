@@ -1,31 +1,41 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+
+import MainTabs from './navigation/MainTabs';
 import DetailsScreen from './screens/DetailsScreen';
+
 import { RootStackParamList } from './types/Navigation';
 
-import { StyleSheet, Text, View, FlatList, TextInput, Button } from 'react-native';
-import { useState, useEffect } from 'react';
-import ProductCard from './components/ProductCard';
-import { Product } from './types/Product';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootTabParamList } from './types/Navigation';
+
+import { StyleSheet} from 'react-native';
+
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+type Props = BottomTabScreenProps<RootTabParamList, 'Home'>
+const Tab = createBottomTabNavigator();
 
 
 export default function App() {
-  return(
+  return (
     <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen
-        name='Home'
-        component={HomeScreen}
-      />
-      <Stack.Screen
-        name='Details'
-        component={DetailsScreen}
-      />
-    </Stack.Navigator>
-  </NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Details"
+          component={DetailsScreen}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
