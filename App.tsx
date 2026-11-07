@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import MainTabs from './navigation/MainTabs';
 import DetailsScreen from './screens/DetailsScreen';
+import LoginScreen from './screens/LoginScreen';
 
 import { RootStackParamList } from './types/Navigation';
 
@@ -23,7 +24,13 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Login">
+
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+        />
+
         <Stack.Screen
           name="MainTabs"
           component={MainTabs}
@@ -34,6 +41,8 @@ export default function App() {
           name="Details"
           component={DetailsScreen}
         />
+
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
