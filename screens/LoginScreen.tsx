@@ -1,14 +1,20 @@
 import { useState } from "react";
 import {View,Text,TextInput,StyleSheet, Button, Alert } from "react-native";
 
+import { Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { ActivityIndicator } from 'react-native';
+
 export default function LoginScreen(){
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
 
         //EMPTY FIELDS
         if (email.trim() === '' || password.trim() === '') {
@@ -28,7 +34,15 @@ export default function LoginScreen(){
             return;
         }
 
-        Alert.alert('Success', 'Login form submitted successfully!');
+        setLoading(true);
+
+        try {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            Alert.alert('Success', 'Login successful!');
+        } finally {
+            setLoading(false);
+        }
     }
 
     return(
@@ -45,6 +59,7 @@ export default function LoginScreen(){
                 }} 
                 autoCapitalize="none"
                 keyboardType="email-address"
+                editable={!loading}
             />
 
             {emailError !== '' &&(
@@ -53,22 +68,44 @@ export default function LoginScreen(){
             
             }
 
-            <TextInput
+            <View style = {{
+                flexDirection: 'row',
+                alignItems: 'center',
+            }}>
+
+                <TextInput
                 placeholder = "Enter Your Password" 
                 value = {password}
                 onChangeText = {(text) => {
                     setPassword(text)
                     setPasswordError('')
                 }}
-                secureTextEntry = {true}
-            />
+                secureTextEntry = {!showPassword}
+                editable={!loading}
+                
+                />
+
+                <Pressable onPress={() => setShowPassword(!showPassword)} disabled={loading}>
+                    <Ionicons
+                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={24}
+                        color="gray"
+                    />
+                </Pressable>
+
+            </View>
 
             {passwordError !== '' &&(
                 <Text style = {{color: 'red'}}>{passwordError}</Text>
             )
             }
             
-            <Button title="Login" onPress={handleLogin}/>
+            <Button 
+                title={loading? 'Logging in...' : 'Login'} 
+                onPress={handleLogin}
+                disabled = {loading}
+            />
+            {loading && <ActivityIndicator size="large" color="blue"/>}
 
         </View>
     );
