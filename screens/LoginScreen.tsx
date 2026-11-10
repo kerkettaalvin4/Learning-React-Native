@@ -7,6 +7,7 @@ import { ActivityIndicator } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native';
 import { Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
+import { useRef } from 'react';
 
 export default function LoginScreen(){
 
@@ -16,6 +17,7 @@ export default function LoginScreen(){
     const [passwordError, setPasswordError] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
+    const passwordInputRef = useRef<TextInput>(null);
 
     const handleLogin = async () => {
 
