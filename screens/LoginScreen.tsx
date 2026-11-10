@@ -4,6 +4,9 @@ import {View,Text,TextInput,StyleSheet, Button, Alert } from "react-native";
 import { Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
+import { Keyboard } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
 
 export default function LoginScreen(){
 
@@ -46,7 +49,12 @@ export default function LoginScreen(){
     }
 
     return(
-        <View style = {styles.container}>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior="padding"
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style = {styles.container}>
 
             <Text style={styles.title}>Welcome Back</Text>
 
@@ -108,6 +116,8 @@ export default function LoginScreen(){
             {loading && <ActivityIndicator size="large" color="blue"/>}
 
         </View>
+        </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
